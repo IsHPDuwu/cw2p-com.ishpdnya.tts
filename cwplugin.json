@@ -1,0 +1,12 @@
+{
+  "id": "com.ishpdnya.tts",
+  "name": "TTS 服务",
+  "version": "1.0.0",
+  "api_version": ">=0.3.2",
+  "entry": "main.py",
+  "author": "IsHPDuwu",
+  "description": "为通知提供 TTS 服务",
+  "url": "https://github.com/IsHPDuwu/cw2p-com.ishpdnya.tts",
+  "readme": "README.md",
+  "icon": "icon.png"
+}

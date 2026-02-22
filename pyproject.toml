@@ -1,0 +1,25 @@
+[project]
+name = "com-ishpdnya-tts"
+version = "1.0.0"
+description = "为通知提供 TTS 服务"
+authors = [
+    {name = "IsHPDuwu"},
+]
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "class-widgets-sdk",
+    "edge-tts",
+    "loguru",
+    "winrt-runtime; sys_platform == 'win32'",
+    "winrt-Windows.Media.SpeechSynthesis; sys_platform == 'win32'",
+    "winrt-Windows.Storage.Streams; sys_platform == 'win32'",
+    "pyttsx3; sys_platform == 'win32'",
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["engines*", "qml*", "assets*"]
