@@ -28,7 +28,7 @@ class Speaker:
         self._lock = threading.Lock()
         self._stopped = False
 
-        # QMediaPlayer 实例（在主线程创建，播放也在主线程）
+        # QMediaPlayer 实例
         self._player: Optional[QMediaPlayer] = None
         self._audio_output: Optional[QAudioOutput] = None
         self._init_player()
@@ -57,9 +57,9 @@ class Speaker:
                 except Exception:
                     pass
 
-    @staticmethod
-    def _safe_unlink(path: Path) -> None:
+    def _safe_unlink(self, path: Path) -> None:
         try:
+            self._player.setSource(QUrl()) 
             path.unlink(missing_ok=True)
             logger.debug("[TTS.Speaker] 临时文件已清理: {}", path)
         except Exception as e:

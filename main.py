@@ -354,24 +354,37 @@ class Plugin(CW2Plugin):
             if next_entries:
                 next_entry = next_entries[0]
                 next_sid = next_entry.get("subjectId")
+                logger.debug(
+                    "[TTS] next_entry: subjectId={!r}, title={!r}, raw={}",
+                    next_sid,
+                    next_entry.get("title"),
+                    next_entry,
+                )
                 # 尝试从 schedule 中查找 subject 详情
                 if next_sid:
                     try:
                         schedule_data = self.api.schedule.get()
                         if schedule_data and hasattr(schedule_data, "subjects"):
+                            logger.debug("[TTS] schedule.subjects 数量: {}", len(schedule_data.subjects))
                             for s in schedule_data.subjects:
                                 sd = s.model_dump() if hasattr(s, "model_dump") else s
                                 if sd.get("id") == next_sid:
                                     ctx["next_subject"] = sd.get("name", "") or ""
                                     ctx["next_teacher"] = sd.get("teacher", "") or ""
                                     ctx["next_location"] = sd.get("location", "") or ""
+                                    logger.debug("[TTS] 匹配到下一节 subject: {}", sd)
                                     break
                     except Exception as e:
                         logger.debug("[TTS] 获取下一节 subject 详情失败: {}", e)
+                else:
+                    logger.debug("[TTS] next_entry 不含 subjectId，准备回退 title")
 
                 # 回退到 title
                 if not ctx["next_subject"]:
                     ctx["next_subject"] = next_entry.get("title", "") or ""
+                    logger.debug("[TTS] 下一节 subject 回退 title: {!r}", ctx["next_subject"])
+            else:
+                logger.debug("[TTS] runtime.next_entries 为空")
 
         except Exception as e:
             logger.warning("[TTS] 获取 runtime 课程信息失败: {}", e)
